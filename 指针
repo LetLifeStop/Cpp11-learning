@@ -1,0 +1,28 @@
+#include<bits/stdc++.h>
+using namespace std;
+# define ll long long
+# define inf 0x3f3f3f3f
+# define LL_inf (1ll<<60)
+const int maxn = 2e6+100;
+int a[maxn];
+int main()
+{
+    int num=0;
+    for(int  i = 2 ; i <= 10 ;  i+= 2 )
+    {
+        a[ num++ ] = i ;
+    }
+    for(int i = 0 ; i < num ;  i++)
+    {
+        cout<< i <<" "<< a[i] <<endl;
+    }
+    int *ptr = a ;
+    for(int i=0; i< 5;  i++)
+    {
+        cout<<(*ptr)<<endl;
+        (ptr++);
+    }
+    return 0;
+}
+ptr 一开始指向a数组的第一个位置，每一次++表示从当前位置往后移动sizeof(a)个位置，这样就可以顺序访问数组里面的内容了
+如果数组是从第一个开始存储的，那么可以在一开始就ptr++ .
