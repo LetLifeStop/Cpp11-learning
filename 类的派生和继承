@@ -1,0 +1,117 @@
+ 虚函数：在基类定义，派生类可以重写它.
+ 纯虚函数：在基类中无法给出有意义的实现，留给 派生类去做.
+ 析构函数：清理内存使用，但是为了保证多态性，当通过基类指针来删除派生类对象的时候，是派生类中析构函数的调用;所以当基类中有虚函数的时候， 记得将其析构函数
+ 变成虚析构函数.
+ #include<bits/stdc++.h>
+using namespace std;
+const int size = 100;
+class Base
+{
+public:
+    Base():
+        memberA(0),memberB(100),pMemberC(new int[size])
+    {
+        cout<<"In default constructor"<<endl;
+    }
+    Base(int a):
+        memberA{a},memberB{100},pMemberC{new int[size]}
+    {
+        cout<<"In normal constructor"<<endl;
+    }
+    Base(const Base& other):
+        memberA{other.memberA},memberB{other.memberB},
+        pMemberC{nullptr}
+    {
+        cout<<"In copy construct"<<endl;
+    }
+    Base& operator = ( const Base &other);
+    Base(Base&& other);
+    Base& operator = (Base&& other);
+    ~Base()
+    {
+        if(pMemberC != nullptr)
+        {
+            delete[] pMemberC;
+            pMemberC=nullptr;
+        }
+        cout<<"in destructor"<<endl;
+    }
+protected:
+    int getMemberB()
+    {
+        return memberB;
+    }
+    int deleteC(int a,int b = 100,bool test = true);
+private:
+    int memberA;
+    int memberB;
+    static const int size = 512;
+    int* pMemberC;
+};
+class VirtualBase
+{
+public:
+    VirtualBase() = default;
+    virtual ~VirtualBase()
+    {
+        cout<<"in virtialBase:~VirtualBase"<<endl;
+    }
+    virtual void test1(bool test)
+    {
+        cout<<"in virtualBase:testBase1"<<endl;
+    }
+    virtual void test2(int x,int y)=0;
+    void test3()
+    {
+        cout<<"in virtualBase:test3"<<endl;
+    }
+    int vbx;
+    int vby;
+};
+
+class Derived :  public VirtualBase,private Base
+{
+private:
+    int mY;
+public:
+    Derived(int x,int y):
+        Base(x),VirtualBase(),mY()
+    {
+
+    };
+    virtual ~Derived()
+    {
+        cout<<"in Derived:~Derived"<<endl;
+    }
+public:
+    void test1(bool test)override
+    {
+        cout<<"in Derived::test1"<<endl;
+    }
+    void test2(int x,int y)override
+    {
+        cout<<"in Derived::test2"<<endl;
+    }
+    void test3()
+    {
+        cout<<"in Derived::test3"<<endl;
+    }
+};
+
+int main()
+{
+    Derived d(1,1);
+    cout<<"reference test ============"<<endl;
+    VirtualBase &vb = d;
+    vb.test1(true);
+    vb.test2(0,-1);
+    vb.test3();
+    d.test3();
+    cout<<"pointer test ============="<<endl;
+    VirtualBase* pvb= new Derived (1,2);
+    pvb->test1(false);
+    pvb->test2(-1,0);
+    pvb->test3();
+    delete pvb;
+    return 0;
+}
