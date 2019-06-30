@@ -26,3 +26,37 @@ int main()
 }
 ptr 一开始指向a数组的第一个位置，每一次++表示从当前位置往后移动sizeof(a)个位置，这样就可以顺序访问数组里面的内容了
 如果数组是从第一个开始存储的，那么可以在一开始就ptr++ .
+// 打了一天的笔记结果网崩了，就啥也没了....
+#include<bits/stdc++.h>
+using namespace std;
+const int size = 100;
+int main()
+{
+    char str[] = "hello world";
+    char sec[] = "code world";
+
+
+    const char *ptr1 = str;
+    cout << ptr1 << endl;
+    strcpy(str,"hi world");
+    cout << ptr1 << endl;
+    ptr1 = sec;//直接改变指针指向
+    cout << ptr1 << endl;
+    sec[0] = 'o';
+    cout << ptr1 << endl; ///一旦这个指针指向这个字符串，无论这个字符串怎么变，这个指针所代表的内容都不会变；但是指针还可以指向其他地址；
+  
+   ptr1[0] = 'a';//直接改变指针指向的值,报错
+
+    char ss[] = "good game";
+    char *const ptr2 = ss;
+    cout << ptr2 << endl;
+    ptr2[0] ='a';//直接改变指针指向的值
+    cout << ptr2 << endl;
+    strcpy(ptr2, "last");
+    cout << ptr2 << endl;/// 指针当前指向的内容变的话，指针代表的内容也会随之变化，但是这个指针不能再指向其他地址
+    ss[0] = 'z';
+    cout << ptr2 << endl;
+    
+    ptr2 = sec;//直接改变指针指向,报错
+    system("pause");
+}
