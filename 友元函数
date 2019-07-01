@@ -1,0 +1,62 @@
+// 对于友元函数的作用，可以理解为给别的类一个访问当前类的私有成员的权限; 注意必须在当前类声明，如果没有声明的话，是无法编译成功的.
+// 友元函数无法继承，传递；使用时注意预先声明
+#include<bits/stdc++.h>
+using namespace std;
+const int size = 100;
+class Obj;
+class BestFriend;
+class BestFriend
+{
+public:
+    void test(Obj& obj);
+};
+class NormalFriend
+{
+public:
+    void test(Obj& obj);
+    void accessObj(Obj& obj);
+};
+class Obj
+{
+public:
+    Obj(int t)
+    {
+        mPrivate=t;
+    }
+    friend void accessObj(Obj &obj);
+    friend class BestFriend;
+    friend void NormalFriend::accessObj(Obj &obj);
+    void getSomethingPublic()
+    {
+        cout<<"getSomethingPublic"<<endl;
+    }
+private:
+    int mPrivate;
+    void  getSomethingPrivate()
+    {
+        cout<<"getSomethingPrivate"<<endl;
+    }
+};
+void NormalFriend::accessObj(Obj &obj){
+cout<<obj.mPrivate<<endl;
+}
+void NormalFriend::test(Obj &obj){
+//cout<<obj.mPrivate<<endl;
+}
+void accessObj(Obj &obj)
+{
+cout<<obj.mPrivate<<endl;
+}
+void BestFriend::test(Obj &obj){
+cout<<obj.mPrivate<<endl;
+}
+int main()
+{
+    Obj t(123);
+    accessObj(t);
+    NormalFriend tt;
+    tt.accessObj(t);
+    BestFriend ttt;
+    ttt.test(t);
+    return 0;
+}
