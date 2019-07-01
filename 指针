@@ -34,8 +34,7 @@ int main()
 {
     char str[] = "hello world";
     char sec[] = "code world";
-
-
+    /// 这两个的共同点是所指向的字符串改变的话，这个指针代表的内容也会改变
     const char *ptr1 = str;
     cout << ptr1 << endl;
     strcpy(str,"hi world");
@@ -43,20 +42,21 @@ int main()
     ptr1 = sec;//直接改变指针指向
     cout << ptr1 << endl;
     sec[0] = 'o';
-    cout << ptr1 << endl; ///一旦这个指针指向这个字符串，无论这个字符串怎么变，这个指针所代表的内容都不会变；但是指针还可以指向其他地址；
-  
-   ptr1[0] = 'a';//直接改变指针指向的值,报错
+    cout << ptr1 << endl; ///一旦这个指针指向这个字符串，这个指针所代表的内容是无法改 ; 这个指针还可以指向其他地址；
+
+//   ptr1[0] = 'a';//直接改变指针指向的值,报错
 
     char ss[] = "good game";
-    char *const ptr2 = ss;
+    char *const ptr2 = ss;/// 一旦这个指针指向这个字符串，这个指针所代表的内容是可以改变的 ; 这个指针不能再指向其他地址;
     cout << ptr2 << endl;
     ptr2[0] ='a';//直接改变指针指向的值
     cout << ptr2 << endl;
     strcpy(ptr2, "last");
-    cout << ptr2 << endl;/// 指针当前指向的内容变的话，指针代表的内容也会随之变化，但是这个指针不能再指向其他地址
+    cout << ptr2 << endl;
     ss[0] = 'z';
     cout << ptr2 << endl;
-    
-    ptr2 = sec;//直接改变指针指向,报错
-    system("pause");
+
+  //  ptr2 = sec;//直接改变指针指向,报错
+  //  system("pause");
 }
+
