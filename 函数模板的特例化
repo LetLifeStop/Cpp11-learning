@@ -1,0 +1,22 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+template<typename T1,typename T2,typename T3 = long long>
+T3 add123(T1 a1,T2 a2){
+cout << sizeof(T1) << " " << sizeof(T2) << " " << sizeof(T3)<< endl;
+return (T3)(a1+a2);
+}
+//template<>
+//long add123(int *a1,int *a2);
+template<>
+long add123(int* a1,int* a2){
+return (*a1)+(*a2);
+}
+int main(){
+int a1=100;
+int b1=100;
+long val = add123( &a1 , &b1 );
+cout<<val<<endl;
+return 0;
+}
+// 不知为何编译出问题
