@@ -1,0 +1,60 @@
+shared_ptr 共享式指针管理类，内部有一个计数器，每当有一个shared_ptr指向这块内存，计数器加一，当计数器为0的时候，这块内存会被释放.
+对于shared_ptr是符合拷贝赋值的，但是unique_ptr是不符合的，为了满足对unique_ptr的移动，我们可以使用库函数 move，但是move里面的参数对内存的管理权就会消失.
+
+测试代码：
+#include<iostream>
+#include<functional>
+#include<bits/stdc++.h>
+using namespace std;
+class SPItem{
+public:
+    SPItem(int x):mx{x}{
+        std::cout << "int SPItem mx=" << mx << endl;
+    }
+    ~SPItem(){
+        cout << "in ~SPItem mx=" << mx << endl;
+    }
+    int mx;
+};
+int main(){
+    shared_ptr<SPItem> item0 = make_shared<SPItem>(1);
+    std::cout <<"item0->mx=" << item0->mx << std::endl;
+    shared_ptr<SPItem> item1 = item0;
+    if(item0.get() == item1.get()){
+        std::cout<< "same" <<std::endl;
+    }
+    std::cout << item0.use_count() << std::endl;  计数
+    item1.reset(new SPItem(2));  释放空间
+    std::cout << "(*item1).mx " <<(*item1).mx << std::endl;
+    std::cout << "*used count = "<<item1.use_count() << std::endl;
+    //item0.reset(new SPItem(3));
+  //  std::cout << "(*item1).mx " <<(*item0).mx << std::endl;
+    std::cout << "*used count = "<<item0.use_count() << std::endl;
+    return 0;
+}
+
+unique_ptr 某一个时刻，只能有一个ptr指针指向一个内存，如果销毁ptr指针，那么对应的内存也会消失.
+#include<iostream>
+#include<functional>
+#include<bits/stdc++.h>
+using namespace std;
+class SPItem{
+public:
+    SPItem(int x):mx{x}{
+        std::cout << "int SPItem mx=" << mx << endl;
+    }
+    ~SPItem(){
+        cout << "in ~SPItem mx=" << mx << endl;
+    }
+    int mx;
+};
+int main(){
+    unique_ptr<SPItem> unique0(new SPItem(3));
+    SPItem* pUnique0 = unique0.release(); // 获取被保护的对象，同时unique_ptr的内存管理权限也将丢失
+    delete pUnique0;// 所以需要自己手动删除
+    unique_ptr<SPItem> unqie1(new SPItem(4));
+    unique_ptr<SPItem> unqie2(unqie1.release());
+    std::cout << unqie1.get() <<std::endl; // 这个时候unique为nullptr
+    unqie2.reset(nullptr);
+    return 0;
+}
